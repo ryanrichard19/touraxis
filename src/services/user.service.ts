@@ -1,8 +1,18 @@
 import { User, UserWithId, Users } from '../model/users.model';
 import { ObjectId } from 'mongodb';
 
-
 export class UserService {
+    private static instance: UserService;
+
+    private constructor() {}
+
+    public static getInstance(): UserService {
+        if (!UserService.instance) {
+            UserService.instance = new UserService();
+        }
+        return UserService.instance;
+    }
+
     private readonly users = Users;
 
     async getAllUsers(): Promise<UserWithId[]> {
@@ -22,11 +32,7 @@ export class UserService {
     }
 
     async updateUser(id: string, user: User): Promise<UserWithId | null> {
-        const result = await this.users.findOneAndUpdate(
-            { _id: new ObjectId(id) },
-            { $set: user },
-            { returnDocument: 'after' }
-        );
+        const result = await this.users.findOneAndUpdate({ _id: new ObjectId(id) }, { $set: user }, { returnDocument: 'after' });
         return result.value;
     }
 

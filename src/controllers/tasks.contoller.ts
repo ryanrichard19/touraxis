@@ -2,7 +2,7 @@ import { Response, Request, NextFunction } from 'express';
 import { Task, TaskDTO, TaskWithId } from '../model/tasks.model';
 import { TaskService } from '../services/tasks.service';
 
-const taskService = new TaskService();
+const taskService = TaskService.getInstance();
 
 export async function getAllTasks(req: Request<{ user_id: string }>, res: Response<TaskWithId[]>, next: NextFunction) {
     try {

@@ -2,8 +2,7 @@ import { Response, Request, NextFunction } from 'express';
 import { User, UserWithId } from '../model/users.model';
 import { UserService } from '../services/user.service';
 
-
-const userService = new UserService();
+const userService = UserService.getInstance();
 
 export async function getAllUsers(req: Request, res: Response<UserWithId[]>, next: NextFunction) {
     try {

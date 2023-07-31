@@ -3,7 +3,17 @@ import { Task, TaskDTO, TaskWithId, Tasks } from '../model/tasks.model';
 import { ObjectId } from 'mongodb';
 
 export class TaskService {
+    private static instance: TaskService;
     private readonly tasks = Tasks;
+
+    private constructor() {}
+
+    public static getInstance(): TaskService {
+        if (!TaskService.instance) {
+            TaskService.instance = new TaskService();
+        }
+        return TaskService.instance;
+    }
 
     async getAllTasks(userid: string): Promise<TaskWithId[]> {
         return this.tasks.find({ user_id: userid }).toArray();
@@ -50,5 +60,4 @@ export class TaskService {
             Logger.info(`Updated task ${task._id} status to done`);
         }
     }
-    
 }
