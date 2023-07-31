@@ -9,11 +9,9 @@ export function validateRequest(validators: RequestValidators) {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
             if (validators.params) {
-                console.log(req.params);
                 req.params = await validators.params.parseAsync(req.params);
             }
             if (validators.body) {
-                 console.log(req.body, 'dto');
                 req.body = await validators.body.parseAsync(req.body);
             }
             if (validators.query) {
@@ -22,7 +20,6 @@ export function validateRequest(validators: RequestValidators) {
             next();
         } catch (error) {
             if (error instanceof ZodError) {
-                console.log(error);
                 res.status(422);
             }
             next(error);

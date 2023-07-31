@@ -1,3 +1,4 @@
+import Logger from '../library/Logger';
 import { Task, TaskDTO, TaskWithId, Tasks } from '../model/tasks.model';
 import { ObjectId } from 'mongodb';
 
@@ -41,12 +42,12 @@ export class TaskService {
             date_time: { $lt: new Date() }
         });
         const tasks = await tasksCursor.toArray();
-        console.log(`Found ${tasks.length} tasks to update`);
+        Logger.info(`Found ${tasks.length} tasks to update`);
 
         for (let task of tasks) {
             task.status = 'done';
             await this.tasks.findOneAndUpdate({ _id: new ObjectId(task._id) }, { $set: task }, { returnDocument: 'after' });
-            console.log(`Updated task ${task._id} status to done`);
+            Logger.info(`Updated task ${task._id} status to done`);
         }
     }
     

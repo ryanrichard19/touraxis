@@ -6,7 +6,6 @@ const taskService = new TaskService();
 
 export async function getAllTasks(req: Request<{ user_id: string }>, res: Response<TaskWithId[]>, next: NextFunction) {
     try {
-        console.log(req.params.user_id, 'getAllTasks')
         const tasks = await taskService.getAllTasks(req.params.user_id);
         res.json(tasks);
     } catch (error) {
