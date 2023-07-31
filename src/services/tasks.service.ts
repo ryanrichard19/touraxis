@@ -34,4 +34,20 @@ export class TaskService {
         const result = await this.tasks.deleteOne({ _id: new ObjectId(id), user_id: userid });
         return result.deletedCount === 1;
     }
+
+    async updateStatusPendingTaskstoDone(): Promise<void> {
+        const tasksCursor: any = this.tasks.find({
+            status: 'pending',
+            date_time: { $lt: new Date() }
+        });
+        const tasks = await tasksCursor.toArray();
+        console.log(`Found ${tasks.length} tasks to update`);
+
+        for (let task of tasks) {
+            task.status = 'done';
+            await this.tasks.findOneAndUpdate({ _id: new ObjectId(task._id) }, { $set: task }, { returnDocument: 'after' });
+            console.log(`Updated task ${task._id} status to done`);
+        }
+    }
+    
 }

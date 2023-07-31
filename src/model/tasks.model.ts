@@ -11,6 +11,7 @@ export const Task = z.object({
 });
 
 export const TaskDTO = z.object({
+    id: z.string().optional(),
     name: z.string(),
     description: z.string(),
     date_time: z.string(),
