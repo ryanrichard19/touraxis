@@ -1,63 +1,37 @@
 import { ObjectId } from 'mongodb';
 import * as z from 'zod';
 
-export const ParamsWithId = z.object({
-    id: z
+
+function objectIdSchema(name: string) {
+    return z
         .string()
         .min(1)
         .refine(
             (val) => {
                 try {
-                    return new ObjectId(val);
+                    new ObjectId(val);
+                    return true;
                 } catch (error) {
                     return false;
                 }
             },
             {
-                message: 'Invalid ObjectId'
+                message: `Invalid ObjectId for ${name}`
             }
-        )
+        );
+}
+
+export const ParamsWithId = z.object({
+    id: objectIdSchema('id')
 });
 
 export const ParamsWithUserId = z.object({
-    user_id: z
-        .string()
-        .min(1)
-        .refine((val) => {
-            try {
-                return new ObjectId(val);
-            } catch (error) {
-                return false;
-            }
-        })
+    user_id: objectIdSchema('user_id')
 });
 
 export const ParamsWithUserIdandId = z.object({
-    id: z
-        .string()
-        .min(1)
-        .refine(
-            (val) => {
-                try {
-                    return new ObjectId(val);
-                } catch (error) {
-                    return false;
-                }
-            },
-            {
-                message: 'Invalid ObjectId'
-            }
-        ),
-    user_id: z
-        .string()
-        .min(1)
-        .refine((val) => {
-            try {
-                return new ObjectId(val);
-            } catch (error) {
-                return false;
-            }
-        })
+    id: objectIdSchema('id'),
+    user_id: objectIdSchema('user_id')
 });
 
 export type ParamsWithId = z.infer<typeof ParamsWithId>;

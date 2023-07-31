@@ -2,7 +2,7 @@ import cron from 'node-cron';
 import { TaskService } from '../services/tasks.service';
 import Logger from '../library/Logger';
 
-const taskService = new TaskService();
+const taskService = TaskService.getInstance();
 
 export function startJob() {
     Logger.info('Task Scheduler starting...');
